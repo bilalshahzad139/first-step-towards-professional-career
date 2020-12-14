@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:latest
+    container_name: mytestsql_net
+    ports:
+    - "3306:3306"
+    volumes:
+      - /d/dockerseries/mysqldata:/var/lib/mysql
+    networks:
+      - mytestnet
+    environment:
+      - MYSQL_ROOT_PASSWORD:123
+  web:
+    # image: php:7.4-apache
+    image: bilalshahzad139/myphpapache
+    container_name: myphp
+    ports:
+      - "8082:80"
+    volumes:
+      - /d/dockerseries/php2:/var/www/html
+    networks:
+      - mytestnet
+    depends_on:
+      - db  
+networks:
+  mytestnet:

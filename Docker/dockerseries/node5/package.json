@@ -1,0 +1,17 @@
+{
+  "name": "mytest",
+  "version": "1.0.0",
+  "description": "it is a test project",
+  "main": "index.js",
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js",
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
+}

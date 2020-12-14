@@ -117,7 +117,7 @@ OR
 - Start nginx container 
 	> docker run --name mywebserver -d -p 8081:80 nginx:latest
 
-- Connvect with mywebserver container 
+- Connect with mywebserver container 
 	> docker exec -it mywebserver bash
 
 - Go to /usr/share/nginx/html and see its content

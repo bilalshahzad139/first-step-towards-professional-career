@@ -1,171 +1,190 @@
 ## Task 0: Docker CLI
 ### Following are some important docker commands 
 
-To check available images 
-> docker image ls
+- To check available images 
+	> docker image ls
 
-To check running containers
-> docker container ls
+- To check running containers
+	> docker container ls
 
-To check all (running + stopped) containers)
-> docker container ls -a
+- To check all (running + stopped) containers)
+	> docker container ls -a
 
-To pull an image from Registry (e.g. Docker Hub)
-> docker pull <image_name>
+- To pull an image from Registry (e.g. Docker Hub)
+	> docker pull <image_name>
 
-To create a new container (in stopped state)
-> docker create <image_name> 
+- To create a new container (in stopped state)
+	> docker create <image_name> 
 
-To create a container in running state
-> docker run <image_name> 
+- To create a container in running state
+	> docker run <image_name> 
 
-Some important flags to pass while creating a container
+- Some important flags to pass while creating a container
 
- - --name <name>   
- - -p <external_port>:<internal_port>   
- - -d (detached or in background mode)  
- - --rm (Remove the container as soon as it is stopped)  
- - -v source:destination (for volume mounting)  
- - -it (withinteractive shell)  
- - Example
-   > docker run --rm --name mywebserver -d -p 8081:80 nginx:latest
+	 - --name <name>   
+	 - -p <external_port>:<internal_port>   
+	 - -d (detached or in background mode)  
+	 - --rm (Remove the container as soon as it is stopped)  
+	 - -v source:destination (for volume mounting)  
+	 - -it (withinteractive shell)  
+	 - Example
+	   > docker run --rm --name mywebserver -d -p 8081:80 nginx:latest
 
-To stop a running container
-> docker stop <container_name or id>
+- To stop a running container
+	> docker stop <container_name or id>
 
-To start a stopped container 
-> docker start <container_name or id>
+- To start a stopped container 
+	> docker start <container_name or id>
 
-To remove a running container
-> docker container rm -f <container_name or id>
+- To remove a running container
+	> docker container rm -f <container_name or id>
 
-Execute a command in a running container (-it means interactive terminal)
-> docker exec -it mywebserver bash
+- Execute a command in a running container (-it means interactive terminal)
+	> docker exec -it mywebserver bash
 
-Remove docker image (forcefully)
-> docker rmi -f <image_name> 
+- Remove docker image (forcefully)
+	> docker rmi -f <image_name> 
 
 ## Task 1: Download an Image & Play with it
 
-Pull an image and store in docker cache
-> docker pull nginx:latest
+- Pull an image and store in docker cache
+	> docker pull nginx:latest
 
-Run container in detatched mode (-d) with a name and forward 8081 to 80 
-> docker run --name mywebserver -d -p 8081:80 nginx:latest
+- Run container in detatched mode (-d) with a name and forward 8081 to 80 
+	> docker run --name mywebserver -d -p 8081:80 nginx:latest
 
-Test in browser => http://localhost:8081/
+- Test in browser => http://localhost:8081/
 OR 
-By using Curl
-> curl http://localhost:8081
+- By using Curl
+	> curl http://localhost:8081
 
-Stop container & verify
-> docker container stop mywebserver 
-> docker container ls
-> docker container ls -a
+- Stop container & verify
+	> docker container stop mywebserver 
+	
+	> docker container ls
+	
+	> docker container ls -a
 
-Start the stopped container  
-> docker start mywebserver
+- Start the stopped container  
+	> docker start mywebserver
 
-Stop & remove a container 
-> docker stop mywebserver
-> docker container rm -f mywebserver
+- Stop & remove a container 
+	> docker stop mywebserver
+	
+	> docker container rm -f mywebserver
 
-Now Create a container (in stopped state)
-> docker create --name mywebserver -d -p 8081:80 nginx:latest
-> docker container ls
-> docker container ls -a
+- Now Create a container (in stopped state)
+	> docker create --name mywebserver -d -p 8081:80 nginx:latest
+	
+	> docker container ls
 
-Now Start the stopped conatiner 
-> docker start mywebserver 
-> docker container ls
+	> docker container ls -a
 
-Test in browser => http://localhost:8081/
+- Now Start the stopped conatiner 
+	> docker start mywebserver 
+	
+	> docker container ls
 
-Stop & remove a container 
-> docker container rm -f mywebserver
+- Test in browser => http://localhost:8081/
 
-Run multiple nginx containers but on different ports
-> docker create --name mywebserver1 -d -p 8081:80 nginx:latest
-> docker create --name mywebserver2 -d -p 8082:80 nginx:latest
-> docker create --name mywebserver3 -d -p 8083:80 nginx:latest
+- Stop & remove a container 
+	> docker container rm -f mywebserver
 
-Check in browser 
---  http://localhost:8081
--- http://localhost:8082
--- http://localhost:8083
+- Run multiple nginx containers but on different ports
+	> docker create --name mywebserver1 -d -p 8081:80 nginx:latest
+	
+	> docker create --name mywebserver2 -d -p 8082:80 nginx:latest
 
-Clean the resources
-> docker container rm -f mywebserver1
-> docker container rm -f mywebserver2
-> docker container rm -f mywebserver3
+	> docker create --name mywebserver3 -d -p 8083:80 nginx:latest
+
+- Check in browser 
+	- http://localhost:8081
+	- http://localhost:8082
+	- http://localhost:8083
+
+- Clean the resources
+	> docker container rm -f mywebserver1
+	
+	> docker container rm -f mywebserver2
+	
+	> docker container rm -f mywebserver3
 
 
 ## Task 2: Docker writeable layer is temporary
 
 **Note:** niginx:latest is configured to use /usr/share/nginx/html as default directory. We are going to add a new page & check if webserver serves that.
 
-Start nginx container 
-> docker run --name mywebserver -d -p 8081:80 nginx:latest
+- Start nginx container 
+	> docker run --name mywebserver -d -p 8081:80 nginx:latest
 
-Connvect with mywebserver container 
-> docker exec -it mywebserver bash
+- Connvect with mywebserver container 
+	> docker exec -it mywebserver bash
 
-Go to /usr/share/nginx/html and see its content
-> cd /usr/share/nginx/html
-> ls
+- Go to /usr/share/nginx/html and see its content
+	> cd /usr/share/nginx/html
+	
+	> ls
 
-Create a file (use Ctr +D to get out from cat)
+- Create a file (use Ctr +D to get out from cat)
 
-    cat > a.html
-    <h1>Hello</h1>
+	    cat > a.html
+	    <h1>Hello</h1>
 
-Check in browser => http://localhost:8081/a.html
+- Check in browser => http://localhost:8081/a.html
 
-> Ctr+P & Ctr +Q to get out from container
+	> Ctr+P & Ctr +Q to get out from container
 
-Remove & run container again & check if a.html is still there
-> docker container rm -f mywebserver
-> docker run --name mywebserver -d -p 8081:80 nginx:latest
-> docker exec -it mywebserver bash
-> cd /usr/share/nginx/html && ls 
+- Remove & run container again & check if a.html is still there
+	> docker container rm -f mywebserver
+	
+	> docker run --name mywebserver -d -p 8081:80 nginx:latest
+	
+	> docker exec -it mywebserver bash
+	
+	> cd /usr/share/nginx/html && ls 
 
 **Result:** We'll not have file there as when container is removed, its writeable layer is also removed
 
-Get out from container (Ctr+PQ)
+- Get out from container (Ctr+PQ)
 
-Clean the resources
-> docker container rm -f mywebserver
+- Clean the resources
+	> docker container rm -f mywebserver
 
 ## Task 3: Understanding Volume Mounting in Dockers
 
 https://docs.docker.com/storage/
 - Docker provides different option to store things outside of container 
--- volumes
--- bind mount 
--- tmpfs mount
--- named pipes 
+	- volumes
+	- bind mount 
+	- tmpfs mount
+	- named pipes 
 - :ro (read only)
 - :rw (read write)
 
 ### Option 1: (using volumes or Docker File System)
 Note: We'll not give full path of 'Source' in this case but just a name.
 
-Start container & create a file & check in browser. Docker will create a myapp folder in Host file system but in docker defined area. 
-> docker run --name mywebserver -d -p 8081:80 -v myapp:/usr/share/nginx/html nginx:latest
-> docker exec -it mywebserver bash
-> cd /usr/share/nginx/html && ls 
-> Create a file with content (Use Ctr + D to end cat)
+- Start container & create a file & check in browser. Docker will create a myapp folder in Host file system but in docker defined area. 
+	> docker run --name mywebserver -d -p 8081:80 -v myapp:/usr/share/nginx/html nginx:latest
 
-    cat > a.html
-    <h1>Hello</h1>
+	> docker exec -it mywebserver bash
 
-Check in browser => http://localhost:8081/a.html
+	> cd /usr/share/nginx/html && ls 
 
-Remove container, create again & check if file is still there? 
-> docker container rm -f mywebserver
-> docker run --name mywebserver -d -p 8081:80 -v myapp:/usr/share/nginx/html nginx:latest
-> docker exec -it mywebserver bash
-> cd /usr/share/nginx/html && ls 
+	> Create a file with content (Use Ctr + D to end cat)
+
+	    cat > a.html
+	    <h1>Hello</h1>
+
+- Check in browser => http://localhost:8081/a.html
+- Remove container, create again & check if file is still there? 
+	> docker container rm -f mywebserver
+	
+	> docker run --name mywebserver -d -p 8081:80 -v myapp:/usr/share/nginx/html nginx:latest
+	
+	> docker exec -it mywebserver bash
+	
+	> cd /usr/share/nginx/html && ls 
 
 **Result:** File is still there as it is was not part of container but coming fom host machine. 
 
@@ -173,94 +192,95 @@ Remove container, create again & check if file is still there?
     On Windows: \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
     On Linux: /var/bin/docker
 
-Clean the resources
-> docker container rm -f mywebserver
+- Clean the resources
+	> docker container rm -f mywebserver
 
 ### Option 2: (using bind mount)
 Note: We'll give full path of 'Source' in this case.
 
 **Assumption:** Full path of nginx1 folder is => D:\dockerseries\nginx1 (/d/dockerseries/nginx1)
 
-Open nginx1 folder in VSCode 
-Create index.html file with following content
+- Open nginx1 folder in VSCode 
+- Create index.html file with following content
 
-    <h1>Hello World - Pakistan</h1>
+	    <h1>Hello World - Pakistan</h1>
 
-Start container & check in browser 
-> docker run --name mywebserver -d -p 8081:80 -v /d/dockerseries/nginx1:/usr/share/nginx/html nginx:latest
+- Start container & check in browser 
+	> docker run --name mywebserver -d -p 8081:80 -v /d/dockerseries/nginx1:/usr/share/nginx/html nginx:latest
 
-Check /usr/share/nginx/html in container. 
-> docker exec -it mywebserver bash
-> cd /usr/share/nginx/html && ls 
+- Check /usr/share/nginx/html in container. 
+	> docker exec -it mywebserver bash
+	
+	> cd /usr/share/nginx/html && ls 
 
 **Result:** We should see our index.html file in /usr/share/nginx/html (although we created that outside of container)
 
-Check in browser => http://localhost:8081/
+- Check in browser => http://localhost:8081/
 
 **Result:** We should see our page now instead of nginx default page
 
-Now create a file in container & check if we find that file at mounted path (i.e. /d/dockerseries/nginx1)
+- Now create a file in container & check if we find that file at mounted path (i.e. /d/dockerseries/nginx1)
 
-    cat > a.html
-    <h1>Hello</h1>
+	    cat > a.html
+	    <h1>Hello</h1>
 
-> Ctr +D to end cat 
+	> Ctr +D to end cat 
 
-Check if we've a.html file in /d/dockerseries/nginx1
+- Check if we've a.html file in /d/dockerseries/nginx1
 
 **Result:** We should have a.html available in source directory. 
 
-Also check in browser => http://localhost:8081/a.html
+- Also check in browser => http://localhost:8081/a.html
+- Remove container, create again & check if file is still visible in /usr/share/nginx/html? 
+	> docker container rm -f mywebserver
+	
+	> docker run --name mywebserver -d -p 8081:80 -v /d/dockerseries/nginx1:/usr/share/nginx/html nginx:latest
+	
+	> docker exec -it mywebserver bash
+	
+	> cd /usr/share/nginx/html && ls 
 
-Remove container, create again & check if file is still visible in /usr/share/nginx/html? 
-> docker container rm -f mywebserver
-> docker run --name mywebserver -d -p 8081:80 -v /d/dockerseries/nginx1:/usr/share/nginx/html nginx:latest
-> docker exec -it mywebserver bash
-> cd /usr/share/nginx/html && ls 
-
-Clean the resources
-> docker container rm -f mywebserver
+- Clean the resources
+	> docker container rm -f mywebserver
 
 ## Task 4: Create your own nginx image with content inside it 
 
 Assumption: Full path of nginx2 => D:\dockerseries\nginx2 (/d/dockerseries/nginx2)
 
-Open nginx2 folder in VSCode 
-Create a file 'Dockerfile'with following content 
+- Open nginx2 folder in VSCode and create a file 'Dockerfile'with following content 
 
-    FROM nginx:latest
-    COPY . /usr/share/nginx/html  # copies current folder content to /usr/share/nginx/html
+	    FROM nginx:latest
+	    COPY . /usr/share/nginx/html  # copies current folder content to /usr/share/nginx/html
 
-Open new terminal in VSCode. Build image using Dockerfile. Name of file is bilalshahzad/mytest and context is current directory
-> docker build -t bilalshahzad139/mytest .
+- Open new terminal in VSCode. Build image using Dockerfile. Name of file is bilalshahzad/mytest and context is current directory
+	> docker build -t bilalshahzad139/mytest .
 
-Check if newly created image is available in cache
-> docker image ls 
+- Check if newly created image is available in cache
+	> docker image ls 
 
-Run container of this new image 
-> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
+- Run container of this new image 
+	> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
 
-Check http://localhost:8081 in browser 
+- Check http://localhost:8081 in browser 
+- Stop & Remove container 
+	> docker rm -f mywebserver 
 
-Stop & Remove container 
-> docker rm -f mywebserver 
+- Make change in index.html file & build image again 
+	> docker build -t bilalshahzad139/mytest .
 
-Make change in index.html file & build image again 
-> docker build -t bilalshahzad139/mytest .
+- Run container of updated image by using same command 
+	> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
 
-Run container of updated image by using same command 
-> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
+- Check http://localhost:8081 in browser 
+- Connect to container & check html folder 
+	> docker exec -it mywebserver bash
 
-Check http://localhost:8081 in browser 
+	> cd /usr/share/nginx/html && ls 
 
-Connect to container & check html folder 
-> docker exec -it mywebserver bash
-> cd /usr/share/nginx/html && ls 
+		  Ctr+PQ to get out from container without stopping container 
 
-    Ctr+PQ to get out from container without stopping container 
-
-Clean the resources
-> docker container rm -f mywebserver 
+- Clean the resources
+	> docker container rm -f mywebserver 
 
 ## Task 5: Create an image and push to Docker Hub 
 
@@ -268,141 +288,142 @@ Clean the resources
 - Account is created on https://hub.docker.com/ and repository is mytest (e.g. bilalshahzad139/mytest)
 - Full path of nginx2 => D:\dockerseries\nginx2 (/d/dockerseries/nginx2)
 
-Open nginx2 folder in VSCode. Create image (if it not created yet). We already have a Dockerfile.
-> docker build -t bilalshahzad139/mytest .
+- Open nginx2 folder in VSCode. Create image (if it not created yet). We already have a Dockerfile.
+	> docker build -t bilalshahzad139/mytest .
 
-Login to docker registry (i.e.https://hub.docker.com/)
-> docker login --username=bilalshahzad139
+- Login to docker registry (i.e.https://hub.docker.com/)
+	> docker login --username=bilalshahzad139
 
-Push image 
-> docker push bilalshahzad139/mytest
+- Push image 
+	> docker push bilalshahzad139/mytest
 
-Verify if image is pushed successfully on => https://hub.docker.com/bilalshahzad139/mytest
+- Verify if image is pushed successfully on => https://hub.docker.com/bilalshahzad139/mytest
 
-Now remove image from local cache & pull it from docker hub 
-> docker rmi bilalshahzad139/mytest
-> docker pull bilalshahzad139/mytest   
+- Now remove image from local cache & pull it from docker hub 
+	> docker rmi bilalshahzad139/mytest
+	
+	> docker pull bilalshahzad139/mytest   
 
-Run container
-> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
+- Run container
+	> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
 
-Check http://localhost:8081 in browser 
-
-Clean the resources
-> docker container rm -f mywebserver 
+- Check http://localhost:8081 in browser 
+- Clean the resources
+	> docker container rm -f mywebserver 
 
 ## Task 6: Save & Load Image from a file
 
-Save bilalshahzad139/mytest image to test.tar file
+### Save bilalshahzad139/mytest image to test.tar file
 
-On Linux
-> docker save bilalshahzad139/mytest > test.tar
+- On Linux
+	> docker save bilalshahzad139/mytest > test.tar
 
-On Windows
-> docker save bilalshahzad139/mytest -o test.tar
+- On Windows
+	> docker save bilalshahzad139/mytest -o test.tar
 
-Remove from cache 
-> docker rmi bilalshahzad139/mytest
+- Remove from cache 
+	> docker rmi bilalshahzad139/mytest
 
-Load image from mytest.tar file
-On Linux 
-> docker load --input test.tar
+###  Load image from mytest.tar file
+- On Linux 
+	> docker load --input test.tar
 
-On Windows
-> docker load -i test.tar
+- On Windows
+	> docker load -i test.tar
 
-Run container
-> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
+- Run container
+	> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
 
-Check http://localhost:8081 in browser 
-
-Clean the resources
-> docker container rm -f mywebserver 
+- Check http://localhost:8081 in browser 
+- Clean the resources
+	> docker container rm -f mywebserver 
 
 **Note:** unzip .tar file and explore its content & find the layer we created.
 
 Learning: 
 
- - An Image is a combination of Layers (stacked on one another)
- - A layer is a file system overriding files on layers below it
+- An Image is a combination of Layers (stacked on one another)
+- A layer is a file system overriding files on layers below it
 
 ## Task 7: Playing with a node application without docker
 
 **Prerequisite:** Node is installed on machine 
 
-Open 'node1' folder in VS Code and open a new terminal in VSCode
-Check node & npm versions 
-> node --version 
-> npm --version 
+- Open 'node1' folder in VS Code and open a new terminal in VSCode
+- Check node & npm versions 
+	> node --version 
+	
+	> npm --version 
 
-Install packages 
-> npm install 
+- Install packages 
+	> npm install 
 
-Run application
-> node server.js 
+- Run application
+	> node server.js 
 
-Check http://localhost:8080 in browser
+- Check http://localhost:8080 in browser
 
-    Ctr + C (in terminal) to stop server 
+	    Ctr + C (in terminal) to stop server 
 
 
 ## Task 8: Using NodeJS in Container for development
 
 **Assumption:** Full path of node2 => D:\dockerseries\node2 (/d/dockerseries/node2)
 
-Open 'node2' folder in VS Code and open a new terminal
-Start Node container  (-it => interactive terminal )
-> docker run -it --name mynode node:12
+- Open 'node2' folder in VS Code and open a new terminal
+- Start Node container  (-it => interactive terminal )
+	> docker run -it --name mynode node:12
 
 Problem: It will start with node as entry point.
 
-Remove container
-> docker container rm -f mynode 
+- Remove container
+	> docker container rm -f mynode 
 
-Start Node container with bash as terminal
-> docker run -it --name mynode node:12 bash 
+- Start Node container with bash as terminal
+	> docker run -it --name mynode node:12 bash 
 
-Check node & npm versions 
-> node --version
-> npm --version 
+- Check node & npm versions 
+	> node --version
+	> npm --version 
 
-Check a folder (already available)
-> cd /usr/src && ls 
+- Check a folder (already available)
+	> cd /usr/src && ls 
 
 Note: Now we can create our node files here and work like we can do on our machine but that is not good approach.
 
     Ctr + PQ Get out of terminal without ending container 
 
-Remove container 
-> docker container rm -f mynode 
+- Remove container 
+	> docker container rm -f mynode 
 
-Now run container with a volume mounted & port forwarding. Our application is going to run on a port (e.g. 8080) internally.
-> docker run -it --name mynode -v /d/dockerseries/node2:/usr/src -p 8080:8080 node:12 bash
+- Now run container with a volume mounted & port forwarding. Our application is going to run on a port (e.g. 8080) internally.
+	> docker run -it --name mynode -v /d/dockerseries/node2:/usr/src -p 8080:8080 node:12 bash
 
-Go to /usr/src folder & check content 
-> cd /usr/src && ls 
+- Go to /usr/src folder & check content 
+	> cd /usr/src && ls 
 
 Note: We should see our node app files here. 
 
 Let's do our development as we were doing earlier 
 
-> npm install 
-> node server.js 
+	> npm install 
 
-Test http://localhost:8080 in browser 
+	> node server.js 
 
-In VSCode, make a change in server.js. For example
+- Test http://localhost:8080 in browser 
 
-    Hello World to Hello World Again 
+- In VSCode, make a change in server.js. For example
 
-Exit node server by using Ctr + C & start again
-> node server.js
+	    Hello World to Hello World Again 
 
-Test http://localhost:8080 in browser 
-Exit node server by using Ctr + C, 
-Get out of container Ctr + PQ
-Clean the resources
-> docker container rm -f mynode 
+- Exit node server by using Ctr + C & start again
+	> node server.js
+
+- Test http://localhost:8080 in browser 
+- Exit node server by using Ctr + C, 
+- Get out of container Ctr + PQ
+- Clean the resources
+	> docker container rm -f mynode 
 
 ## Task 9: Package nodejs app in a docker image
 
@@ -417,42 +438,42 @@ What should we do to containerized this app?
 
 
 ### Let's do
-Open 'node3' folder in VS Code and create a file 'Dockerfile' with following content  
+- Open 'node3' folder in VS Code and create a file 'Dockerfile' with following content  
 
-    FROM node:12
-    WORKDIR /usr/src/app
-    COPY . .
-    RUN npm install
-    EXPOSE 8080
-    CMD [ "node", "server.js" ]
+	    FROM node:12
+	    WORKDIR /usr/src/app
+	    COPY . .
+	    RUN npm install
+	    EXPOSE 8080
+	    CMD [ "node", "server.js" ]
 
-Create a file '.dockerignore' with following content (to ignore node_modules folder while copying content during image build)
+- Create a file '.dockerignore' with following content (to ignore node_modules folder while copying content during image build)
 
-    node_modules
-    Dockerfile
+	    node_modules
+	    Dockerfile
 
-Create image 
-> docker build -t bilalshahzad139/nodetest . 
+- Create image 
+	> docker build -t bilalshahzad139/nodetest . 
 
-Run docker container 
-> docker run --name mynodeserver -p 8080:8080 -d  bilalshahzad139/nodetest
+- Run docker container 
+	> docker run --name mynodeserver -p 8080:8080 -d  bilalshahzad139/nodetest
 
-Check http://localhost:8080 in browser 
+- Check http://localhost:8080 in browser 
 
-Check logs of container 
-> docker logs mynodeserver
+- Check logs of container 
+	> docker logs mynodeserver
 
-Connect to container with 'bash' shell
-> docker exec -it mynodeserver bash
+- Connect to container with 'bash' shell
+	> docker exec -it mynodeserver bash
 
-Check content of /usr/src/app
-> cd /usr/src/app && ls
+- Check content of /usr/src/app
+	> cd /usr/src/app && ls
 
-Get out from container 
-> exit 
+- Get out from container 
+	> exit 
 
-Clean the resources
-> docker rm -f mynodeserver 
+- Clean the resources
+	> docker rm -f mynodeserver 
 
 ## Task 10: Install MySQL & connect from workbench
 
@@ -460,67 +481,63 @@ https://hub.docker.com/_/mysql
 
 Assumption: We've an empty folder /d/dockerseries/mysqldata
 
-Run MySQL Container (don't forget to expose port) with a password for root user
-> docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d mysql:latest
+- Run MySQL Container (don't forget to expose port) with a password for root user
+	> docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d mysql:latest
 
-Try to connect through some MySql client (e.g. workbench) (localhost, root, 123)
+- Try to connect through some MySql client (e.g. workbench) (localhost, root, 123)
+- Remvoe container 
+	> docker rm -f mytestsql 
 
-Remvoe container 
-> docker rm -f mytestsql 
+- Run MySQL Container with mount folder 
+	> docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
 
-Run MySQL Container with mount folder 
-> docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
+- Try to connect through workbench (localhost, root, 123) and create following objects
+- Create a new schema 'mytestdb' 
 
-Try to connect through workbench (localhost, root, 123) and create following objects
+	    create schema mytestdb;
 
-Create a new schema 'mytestdb' 
+- Cretae a new table in 'mytestdb'
 
-    create schema mytestdb;
+	    create table mytable (id int, name varchar(50));
 
-Cretae a new table in 'mytestdb'
+- Add some dummy rows 
 
-    create table mytable (id int, name varchar(50));
+	    insert into mytable select 1,'bilal';
+	    insert into mytable select 2,'shahzad';
 
-Add some dummy rows 
+- Remvoe container 
+	> docker rm -f mytestsql 
 
-    insert into mytable select 1,'bilal';
-    insert into mytable select 2,'shahzad';
+- Run MySQL container again with same mounted folder 
+	> docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
 
-Remvoe container 
-> docker rm -f mytestsql 
+- Connect through workbench (localhost, root, 123) and verify if schema & table with data is still there.
 
-Run MySQL container again with same mounted folder 
-> docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
-
-Connect through workbench (localhost, root, 123)
-Verify if schema & table with data is still there.
-
-Clean the resources
-> docker rm -f mytestsql 
+- Clean the resources
+	> docker rm -f mytestsql 
 
 ## Task 11: Connect NodeJS app with containered MySQL
 
-Run MySQL Container with mount folder 
-> docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
+- Run MySQL Container with mount folder 
+	> docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
 
-Try to connect through workbench (localhost, root, 123)  and check if schema, table & data is there 
+- Try to connect through workbench (localhost, root, 123)  and check if schema, table & data is there 
+- Open node4 folder in VSCode and open a new terminal there
+- Now Run Node App to test connection with above MySql instance with "localhost" 
 
-Open node4 folder in VSCode and open a new terminal there
-Now Run Node App to test connection with above MySql instance with "localhost" 
+	    node server.js 
 
-    node server.js 
+- Test http://localhost:8080 in browser 
 
-Test http://localhost:8080 in browser 
+	    Press Ctr + C to exit server
 
-    Press Ctr + C to exit server
-
-Remvoe mysql container 
-> docker rm -f mytestsql 
+- Remvoe mysql container 
+	> docker rm -f mytestsql 
 
 ## Task 12: Connect containered NodeJS app with containered Mysql DB 
 
  - Run MySQL Container with mount folder 
-   > docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
+	   > docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
    
 - Try to connect through workbench (localhost, root, 123)  and check if
    schema, table & data is there
@@ -543,6 +560,7 @@ Assumption: Full path of node5 => D:\dockerseries\node5 (/d/dockerseries/node5)
 - Let's do our development as we were doing earlier 
 - Run following commands in container-terminal
   > npm install 
+  
   > node server.js 
 
 - Test in browser  => http://localhost:8080
@@ -591,7 +609,8 @@ Assumption: Full path of node6 => D:\dockerseries\node6 (/d/dockerseries/node6)
 	> docker logs mysqlnodetest --tail 10
 
 - Clean Resources
-	> docker rm -f mytestsql 
+	> docker rm -f mytestsql
+	 
 	> docker container rm -f mysqlnodetest
 
 Note: If you face issue while connecting nodeJs to mysql, Please try executing following in MySQL to use native password support.
@@ -627,9 +646,10 @@ Note: If we don't provide a network, containers are connected to a default 'brid
 
 - Remove containers 
 	> docker rm -f mytestsql_net
+	
 	> docker rm -f mysqlnodetest_net
 
---- Now Run MySQL without exposing port using -p (as MySQL will be used by node app internally)
+Now Run MySQL without exposing port using -p (as MySQL will be used by node app internally)
 
 - Run MySQL (without -p) & node container
 	> docker run --network mytestnet --name mytestsql_net -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
@@ -642,11 +662,14 @@ Note: If we don't provide a network, containers are connected to a default 'brid
 
 - Check networks 
 	> docker network ls 
+	
 	> docker inspect mytestnet 
 
 - Clean Resources
 	> docker rm -f mytestsql_net
+	
 	> docker rm -f mysqlnodetest_net
+	
 	> docker network rm mytestnet
 
 ## Task 14: Use docker-compose to start multiple services
@@ -657,8 +680,8 @@ Note: If we don't provide a network, containers are connected to a default 'brid
 Assumption: 
 - Full path of node8 => D:\dockerseries\node8 (/d/dockerseries/node8)
 - Assumption: We've following images available used earlier 
--- mysql:latest
--- mysqlnodetest_net (this is using host = mytestsql_net )
+	- mysql:latest
+	- mysqlnodetest_net (this is using host = mytestsql_net )
 
 ### Let's do
 - Open node8 folder in VSCode and create a new file 'docker-compose.yml' file with following content in it 
@@ -704,10 +727,15 @@ Assumption:
 
 Other commands : 
 > docker-compose up (create & start containers, volumes etc)
+
 > docker-compose down (stop & remove containers)
+
 > docker-compose stop (stop containers)
+
 > docker-compose start (start stopped containers)
+
 > docker-compose rm (remove stopped containers)
+
 > docker-compose top (display main running processes from containers )
 
 ## Task 15: Run PHP-Apache container for development
@@ -721,7 +749,7 @@ Assumption: Full path of php1 => D:\dockerseries\php1 (/d/dockerseries/php1)
 - Remove container
 	> docker rm -f myphp
 
---- Let's mount our folder & use that with Apache-PHP
+Let's mount our folder & use that with Apache-PHP
 - Open php1 folder in VS Code and create a new file 'index.php' with following content 
 
 	    <h1>Hello World! </h1>
@@ -799,7 +827,7 @@ Assumption: Full path of php2 => D:\dockerseries\php2 (/d/dockerseries/php2)
 - Stop & remove services
 	>docker-compose down
 
---- Now what should we do?
+Now what should we do?
 - We should create our own image (with additional packages) by using php:7.4-apache as base image 
 - Create a new file 'Dockerfile' with following content.
 
@@ -857,7 +885,7 @@ Assumption: Full path of dotnet1 => D:\dockerseries\dotnet1 (/d/dockerseries/dot
 	    FROM mcr.microsoft.com/dotnet/sdk:5.0
 	    WORKDIR /source
 	   
---- Note: We need some process in running state inside container to keep container in running state.  If we don't have any such process & we still want to keep container in running state, we may add following entry point (a trick) in our docker file to keep container in running state 
+Note: We need some process in running state inside container to keep container in running state.  If we don't have any such process & we still want to keep container in running state, we may add following entry point (a trick) in our docker file to keep container in running state 
 
     ENTRYPOINT ["tail", "-f", "/dev/null"] # to keep container running 
 
@@ -865,7 +893,7 @@ Assumption: Full path of dotnet1 => D:\dockerseries\dotnet1 (/d/dockerseries/dot
 	> docker build -t bilalshahzad139/mydotnet1 .
 
 
---- Start Container & interact with it 
+Start Container & interact with it 
 - Following command will start & end the container as there is nothing which will keep it up
 	> docker run --name mydotnet1 bilalshahzad139/mydotnet1
 
@@ -898,6 +926,7 @@ Assumption: Full path of dotnet1 => D:\dockerseries\dotnet1 (/d/dockerseries/dot
 
 - Just to play around, create a new console project here 
 	> dotnet new console
+	
 	> ls 
 
 - Restore packages 
@@ -1104,6 +1133,7 @@ Answer: We've windows containers which runs only on a Windows host as containers
 
 - check folder structure e.g. c:\dock 
 	> cd c:\dock 
+	
 	> dir 
 
 

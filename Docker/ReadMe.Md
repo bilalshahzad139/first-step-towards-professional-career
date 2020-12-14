@@ -943,9 +943,13 @@ Result: It should print "Hello world!"
 Learning: 
 - We can have our Dotnet SDK in a container & can have source code outside of container (mounted) and then we can work outside container (e.g. using VSCode) and send restore/build/run commands to container
 
+
 ## Task 19: Create image using sdk:5.0 as base image + WORKDIR
 
 Assumption: full path of dotnet2 => D:\dockerseries\dotnet2 (/d/dockerseries/dotnet2)
+
+Note: Create new self-signed certificate using dotnet utility
+ > dotnet dev-certs https -ep "d:\mypersonalcert.pfx" -p "password"
 
 - Open dotnet2 folder in VSCode and create a new file 'Dockerfile' with following content
 

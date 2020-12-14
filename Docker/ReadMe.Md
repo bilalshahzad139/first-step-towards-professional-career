@@ -630,7 +630,7 @@ Note: If we don't provide a network, containers are connected to a default 'brid
 - Run MySQL Container with user defined network
 	> docker run --network mytestnet --name mytestsql_net -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
 
---- With user-defined bridge network, we can use container 'hostname' or alias e.g. mytestsql_net
+With user-defined bridge network, we can use container 'hostname' or alias e.g. mytestsql_net
 
 - Open folder 'node7' in VSCode and update server.js. Use 'mytestsql_net' in host, 
 - Open terminal in VSCode & build an image
@@ -914,7 +914,7 @@ Start Container & interact with it
 
 	> docker exec -it mydotnet1 bash
 
---- Check & play with dotnet utility
+Check & play with dotnet utility
 
 - Go inside container 
 	> docker exec -it mydotnet1 bash 
@@ -1041,14 +1041,13 @@ Note: dotnet <DLL> command is used to run application from compiled code. It use
 - Test in browser  => https://localhost:5001
 - Test in browser  => http://localhost:5000
 
---- Result: We'll see some styling issues as we should not run this dll but the published one
+Result: We'll see some styling issues as we should not run this dll but the published one
 - Press Ctr + C to exit app in container 
 - Get out from container 
 	>exit 
 
--------------------------------
-Part 3: Pass Env Variables & Run published version 
--------------------------------
+### Part 3: Pass Env Variables & Run published version 
+
 Note: In this part, we'll prepare published version of our code and then will run DLL from it. We'll also pass enviornemnt variables while running the container.
 
 - Run container with Env Variables (--rm is used to remove the container automatically when it goes to stopped state)

@@ -341,10 +341,14 @@ Assumption: Full path of nginx2 => D:\dockerseries\nginx2 (/d/dockerseries/nginx
 	> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
 
 - Check http://localhost:8081 in browser 
-- Clean the resources
-	> docker container rm -f mywebserver 
 
 **Note:** unzip .tar file and explore its content & find the layer we created.
+
+- Inspect Image & check its layers
+        > docker image inspect bilalshahzad139/mytest
+
+- Clean the resources
+	> docker container rm -f mywebserver 
 
 Learning: 
 

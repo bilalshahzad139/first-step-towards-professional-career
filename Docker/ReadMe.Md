@@ -45,6 +45,12 @@
 - Remove docker image (forcefully)
 	> docker rmi -f <image_name> 
 
+- To inspect an image
+	> docker image inspect <image_name> 
+	
+- To inspect a container
+	> docker inspect <container_name>
+	
 ## Task 1: Download an Image & Play with it
 
 - Pull an image and store in docker cache

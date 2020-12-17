@@ -48,6 +48,12 @@
 - Remove docker image (forcefully)
 	> docker rmi -f <image_name> 
 
+- To inspect an image
+	> docker image inspect <image_name> 
+	
+- To inspect a container
+	> docker inspect <container_name>
+	
 ## Task 1: Download an Image & Play with it
 
 - Pull an image and store in docker cache
@@ -338,10 +344,14 @@ Assumption: Full path of nginx2 => D:\dockerseries\nginx2 (/d/dockerseries/nginx
 	> docker run --name mywebserver -p 8081:80 -d bilalshahzad139/mytest
 
 - Check http://localhost:8081 in browser 
-- Clean the resources
-	> docker container rm -f mywebserver 
 
 **Note:** unzip .tar file and explore its content & find the layer we created.
+
+- Inspect Image & check its layers
+        > docker image inspect bilalshahzad139/mytest
+
+- Clean the resources
+	> docker container rm -f mywebserver 
 
 Learning: 
 

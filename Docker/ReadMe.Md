@@ -1410,12 +1410,12 @@ Assumption: Full path of dotnet5 => D:\dockerseries\dotnet5 (/d/dockerseries/dot
 	      new-item -Path IIS:\SslBindings\0.0.0.0!443 -value $cert;"
 
 - We are doing following tasks in above Dockerfile
--- Restore Packages
--- Build Application
--- Build Release using msbuild
--- Remove existing 'Default Web Site' from IIS Using Powershell commands
--- Create a new website in IIS with default HTTPs Port & folder path
--- And then we are providing SSL certificate detail using Powershell commands
+ -- Restore Packages
+ -- Build Application
+ -- Build Release using msbuild
+ -- Remove existing 'Default Web Site' from IIS Using Powershell commands
+ -- Create a new website in IIS with default HTTPs Port & folder path
+ -- And then we are providing SSL certificate detail using Powershell commands
 
 - Open a new terminal in VScode 
 	> docker build -t bilalshahzad139/mydotnet5 .

@@ -1,6 +1,9 @@
 ## Task 0: Docker CLI
 ### Following are some important docker commands 
 
+- Check If docker is working fine
+    > docker version
+
 - To check available images 
 	> docker image ls
 
@@ -345,7 +348,92 @@ Learning:
 - An Image is a combination of Layers (stacked on one another)
 - A layer is a file system overriding files on layers below it
 
-## Task 7: Playing with a node application without docker
+
+
+## Task 7: Understanding Layers in an image
+
+### Part 1: Creating an image from "scratch"
+
+- Open 'misc1' folder in VS Code and open a new terminal in VSCode
+- Create a new Dockerfile with following content 
+
+      FROM scratch
+      WORKDIR /app
+
+- Build a new image 
+   > docker build -t myimage1 .
+
+- Inspect image & check layers (There should be one)
+   > docker inspect myimage1 
+
+- Update Dockerfile
+
+	  FROM scratch
+	  WORKDIR /app
+	  COPY . .
+
+- Build a new image 
+  > docker build -t myimage2 .
+
+- Inspect image & check layers (There should be two)
+  > docker inspect myimage2 
+
+- Save Image in a file & unzip it & check 
+  > docker save myimage2 -o myimage2.tar
+
+- Clearn resources 
+  > docker rmi myimage1 myimage2
+
+### Part 2: Building an image FROM an existing image
+
+- Pull alpine docker image https://hub.docker.com/_/alpine 
+	 > docker pull alpine:3.12.3
+
+- Inspect it and check its Layres 
+	 > docker inspect  alpine:3.12.3
+
+- Save the Image on disk, unzip it and check its file system
+	 > docker save alpine:3.12.3 -o alpine.tar
+
+- Now let's create a a Dockerfile with following content to create a new image 
+
+      FROM alpine:3.12.3
+      RUN apk --no-cache add curl
+
+- Build a new Image 
+  > docker build -t myalpine1 .
+
+- Inspect it and compare its Layres with alpine layers
+  > docker inspect  myalpine1
+
+- Save the Image on disk, unzip it and check its file system
+  > docker save myalpine1 -o myalpine1.tar
+
+- Update Dockerfile with a new RUN command 
+
+      FROM alpine:3.12.3
+      RUN apk --no-cache add curl
+      RUN apk --no-cache add wget  
+
+- Build a new Image 
+  > docker build -t myalpine2 .
+
+- Inspect it and compare its Layres with other alpine images
+  > docker inspect  myalpine2
+
+- Save the Image on disk, unzip it and check its file system
+  > docker save myalpine2 -o myalpine2.tar
+
+- Run container of alpine2 & check 
+  > docker run -it --name myalpine myalpine2 sh
+
+- Clearn resources 
+  > docker rmi myalpine1 myalpine2 myalpine3
+
+  > docker container rm -f myalpine
+
+
+## Task 8: Playing with a node application without docker
 
 **Prerequisite:** Node is installed on machine 
 
@@ -366,7 +454,7 @@ Learning:
 	    Ctr + C (in terminal) to stop server 
 
 
-## Task 8: Using NodeJS in Container for development
+## Task 9: Using NodeJS in Container for development
 
 **Assumption:** Full path of node2 => D:\dockerseries\node2 (/d/dockerseries/node2)
 
@@ -425,7 +513,7 @@ Let's do our development as we were doing earlier
 - Clean the resources
 	> docker container rm -f mynode 
 
-## Task 9: Package nodejs app in a docker image
+## Task 10: Package nodejs app in a docker image
 
 Assumption: full path of node3 => D:\dockerseries\node3 (/d/dockerseries/node3)
 
@@ -475,7 +563,7 @@ What should we do to containerized this app?
 - Clean the resources
 	> docker rm -f mynodeserver 
 
-## Task 10: Install MySQL & connect from workbench
+## Task 11: Install MySQL & connect from workbench
 
 https://hub.docker.com/_/mysql
 
@@ -516,7 +604,7 @@ Assumption: We've an empty folder /d/dockerseries/mysqldata
 - Clean the resources
 	> docker rm -f mytestsql 
 
-## Task 11: Connect NodeJS app with containered MySQL
+## Task 12: Connect NodeJS app with containered MySQL
 
 - Run MySQL Container with mount folder 
 	> docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
@@ -534,7 +622,7 @@ Assumption: We've an empty folder /d/dockerseries/mysqldata
 - Remvoe mysql container 
 	> docker rm -f mytestsql 
 
-## Task 12: Connect containered NodeJS app with containered Mysql DB 
+## Task 13: Connect containered NodeJS app with containered Mysql DB 
 
  - Run MySQL Container with mount folder 
 	   > docker run --name mytestsql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123 -d -v /d/dockerseries/mysqldata:/var/lib/mysql mysql:latest
@@ -617,7 +705,7 @@ Note: If you face issue while connecting nodeJs to mysql, Please try executing f
 
     ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY '123'
 
-## Task 13: Run multiple containers with user defined network (instead of default)
+## Task 14: Run multiple containers with user defined network (instead of default)
 
 Ref: https://docs.docker.com/network/bridge/
 Assumption: Full path of node7 => D:\dockerseries\node7 (/d/dockerseries/node7)
@@ -672,7 +760,7 @@ Now Run MySQL without exposing port using -p (as MySQL will be used by node app 
 	
 	> docker network rm mytestnet
 
-## Task 14: Use docker-compose to start multiple services
+## Task 15: Use docker-compose to start multiple services
 
 - Docker Compose is a tool for defining and running multi-container Docker applications. 
 - We use a YAML file to configure our application’s services. 
@@ -738,7 +826,7 @@ Other commands :
 
 > docker-compose top (display main running processes from containers )
 
-## Task 15: Run PHP-Apache container for development
+## Task 16: Run PHP-Apache container for development
 
 Assumption: Full path of php1 => D:\dockerseries\php1 (/d/dockerseries/php1)
 
@@ -763,7 +851,7 @@ Let's mount our folder & use that with Apache-PHP
 - Remove container
 	> docker rm -f myphp
 
-## Task 16: Setup PHp/Apache/MySQL Dev Env using docker-compose 
+## Task 17: Setup PHp/Apache/MySQL Dev Env using docker-compose 
 
 Assumption: Full path of php2 => D:\dockerseries\php2 (/d/dockerseries/php2)
 
@@ -850,7 +938,7 @@ Now what should we do?
 	> docker-compose down
 
 
-## Task 17 - Understanding of dotnet cli
+## Task 18 - Understanding of dotnet cli
 
 .NET core allows us to build & deploy applicaitons on Linux. .NET core comes with a CLI utility 'dotnet' to do different tasks. We should have basic understanding of it before using docker with .net core applications. We don't full Visual Studio for this but only relevant SDK. To run an application, we only need relevant runtime.
 
@@ -869,7 +957,7 @@ Now what should we do?
 - To run an application
 	> dotnet <proj.dll>
 
-## Task 18: Create an image using sdk:5.0 as base image + WORKDIR
+## Task 19: Create an image using sdk:5.0 as base image + WORKDIR
 
 Note: sdk5.0 is for .NET 5.0
 
@@ -944,7 +1032,7 @@ Learning:
 - We can have our Dotnet SDK in a container & can have source code outside of container (mounted) and then we can work outside container (e.g. using VSCode) and send restore/build/run commands to container
 
 
-## Task 19: Create image using sdk:5.0 as base image + WORKDIR
+## Task 20: Create image using sdk:5.0 as base image + WORKDIR
 
 Assumption: full path of dotnet2 => D:\dockerseries\dotnet2 (/d/dockerseries/dotnet2)
 
@@ -1072,7 +1160,7 @@ Note: In this part, we'll prepare published version of our code and then will ru
 - Get out from container 
 	 > exit 
 
-## Task 20: Create image with published content
+## Task 21: Create image with published content
 
 Assumption: Full path of dotnet3 => D:\dockerseries\dotnet3 (/d/dockerseries/dotnet3)
 
@@ -1106,7 +1194,7 @@ docker rm -f mydotnet3
 Note: We don't need SDK to run the application. Create & check donet core application with docker support in Visual Studio 2019. Dockerfile in that project shows how to use multi-stage build feature to use SDK for compilation and keep runtime (instead of SDK) in final image.
 
 
-## Task 21: Create image for .NET Framework with published content
+## Task 22: Create image for .NET Framework with published content
 
 Observation & Question: We can use .NET Core applications inside a container as .net core supports Linux but what about .NET Framework applications which only run on windows? 
 Answer: We've windows containers which runs only on a Windows host as containers share host OS kernel. So for .NET Framework based applications, we'll have to use windows containers. We'll have to switch from "Linux Containers" to "Windows Containers" in "Docker Desktop" It may ask you to enable Hyper-V in windows features & then may ask for a restart.  Check https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment?tabs=Windows-Server for more details.

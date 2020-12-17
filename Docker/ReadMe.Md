@@ -836,7 +836,122 @@ Other commands :
 
 > docker-compose top (display main running processes from containers )
 
-## Task 16: Run PHP-Apache container for development
+
+## Task 16: Containerize an actual (webrtc => app-ss-node) application 
+
+Assumption: 
+- git is installed
+- VSCode LiveServer extension is installed 
+
+### Download App code
+- Clone https://github.com/bilalshahzad139/webrtc-multi-conn-app/
+  > git clone https://github.com/bilalshahzad139/webrtc-multi-conn-app/
+
+- Go to webrtc-multi-conn-app
+  > cd webrtc-multi-conn-app
+
+- Switch to app-ss-node branch
+  > git checkout app-ss-node
+
+### Run application without docker 
+
+##### Run node app (Singaling Server)
+- Open webrtc-multi-conn-app/src/server folder in VSCode 
+- Open a new terminal in VSCode
+- Install packages 
+  > npm install 
+
+- Run Server app (It will run on 3000 port)
+  > node app.js 
+
+#####  Run Client App 
+- Open webrtc-multi-conn-app/src/clientapp folder in VSCode
+- Right click on index.html & choose "Open with Live Server"
+- This should open http://127.0.0.1:5500/
+- Open generated meeting id in two tabs for testing.
+- End node app in terminal by pressing Ctr + C
+
+### Run application services with docker-compose
+
+##### Step 1: Run NodeApp using docker & clientapp using LiveServer
+- Open webrtc-multi-conn-app folder in VSCode 
+- Create a new file docker-compose.yml in "webrtc-multi-conn-app" folder with following content 
+
+	    version: "3.8"
+	    services:    
+	      sig_server:    
+	        image: node:12
+	        container_name: mynodeserver
+	        ports:
+	          - "3000:3000"
+	        volumes:
+	          - "./src/server:/src"
+	        command: bash -c "cd /src && npm install && node app.js"
+	        networks:
+	          - mytestnet    
+	    networks:
+	      mytestnet:
+
+- Run node app 
+  > docker-compose up -d 
+
+- Check if container is running 
+  > docker container ls
+
+- Run Client App (if it is not already running) & test
+-- Open webrtc-multi-conn-app/src/clientapp folder in VSCode
+-- Right click on index.html & choose "Open with Live Server"
+--This should open http://127.0.0.1:5500/
+-- Open generated meeting id in two tabs for testing.
+
+- Stop Services
+  > docker-compose down
+
+##### Step 2: Run both services using docker
+
+- Update docker-compose.yml file with following content 
+
+	    version: "3.8"
+	    services:
+	      client_web:
+	        image: nginx:latest
+	        container_name: mywebserver
+	        ports:
+	          - "8082:80"
+	          - "4443:4443"
+	        volumes:
+	          - "./src/clientapp:/usr/share/nginx/html"
+	          - "./src/ssl-certificate:/etc/ssl/certs"
+	          - "./src/conf.d/nginx.conf:/etc/nginx/nginx.conf:ro"
+	          - "./src/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro"
+	        networks:
+	          - mytestnet
+	        depends_on:
+	          - sig_server      
+	      sig_server:    
+	        image: node:12
+	        container_name: mynodeserver
+	        ports:
+	          - "3000:3000"
+	        volumes:
+	          - "./src/server:/src"
+	        command: bash -c "cd /src && npm install && node app.js"
+	        networks:
+	          - mytestnet    
+	    networks:
+	      mytestnet:
+
+- Open a new terminal & run services 
+  > docker-compose up -d 
+
+- Test in browser => http://localhost:8082 or https://localhost:4443
+
+- Clean Resources 
+  > docker-compose down
+  
+  
+
+## Task 17: Run PHP-Apache container for development
 
 Assumption: Full path of php1 => D:\dockerseries\php1 (/d/dockerseries/php1)
 
@@ -861,7 +976,7 @@ Let's mount our folder & use that with Apache-PHP
 - Remove container
 	> docker rm -f myphp
 
-## Task 17: Setup PHp/Apache/MySQL Dev Env using docker-compose 
+## Task 18: Setup PHp/Apache/MySQL Dev Env using docker-compose 
 
 Assumption: Full path of php2 => D:\dockerseries\php2 (/d/dockerseries/php2)
 
@@ -948,7 +1063,7 @@ Now what should we do?
 	> docker-compose down
 
 
-## Task 18 - Understanding of dotnet cli
+## Task 19 - Understanding of dotnet cli
 
 .NET core allows us to build & deploy applicaitons on Linux. .NET core comes with a CLI utility 'dotnet' to do different tasks. We should have basic understanding of it before using docker with .net core applications. We don't full Visual Studio for this but only relevant SDK. To run an application, we only need relevant runtime.
 
@@ -967,7 +1082,7 @@ Now what should we do?
 - To run an application
 	> dotnet <proj.dll>
 
-## Task 19: Create an image using sdk:5.0 as base image + WORKDIR
+## Task 20: Create an image using sdk:5.0 as base image + WORKDIR
 
 Note: sdk5.0 is for .NET 5.0
 
@@ -1042,7 +1157,7 @@ Learning:
 - We can have our Dotnet SDK in a container & can have source code outside of container (mounted) and then we can work outside container (e.g. using VSCode) and send restore/build/run commands to container
 
 
-## Task 20: Create image using sdk:5.0 as base image + WORKDIR
+## Task 21: Create image using sdk:5.0 as base image + WORKDIR
 
 Assumption: full path of dotnet2 => D:\dockerseries\dotnet2 (/d/dockerseries/dotnet2)
 
@@ -1170,7 +1285,7 @@ Note: In this part, we'll prepare published version of our code and then will ru
 - Get out from container 
 	 > exit 
 
-## Task 21: Create image with published content
+## Task 22: Create image with published content
 
 Assumption: Full path of dotnet3 => D:\dockerseries\dotnet3 (/d/dockerseries/dotnet3)
 
@@ -1204,7 +1319,7 @@ docker rm -f mydotnet3
 Note: We don't need SDK to run the application. Create & check donet core application with docker support in Visual Studio 2019. Dockerfile in that project shows how to use multi-stage build feature to use SDK for compilation and keep runtime (instead of SDK) in final image.
 
 
-## Task 22: Create image for .NET Framework with published content
+## Task 23: Create image for .NET Framework with published content
 
 Observation & Question: We can use .NET Core applications inside a container as .net core supports Linux but what about .NET Framework applications which only run on windows? 
 Answer: We've windows containers which runs only on a Windows host as containers share host OS kernel. So for .NET Framework based applications, we'll have to use windows containers. We'll have to switch from "Linux Containers" to "Windows Containers" in "Docker Desktop" It may ask you to enable Hyper-V in windows features & then may ask for a restart.  Check https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment?tabs=Windows-Server for more details.

@@ -53,6 +53,16 @@
 	
 - To inspect a container
 	> docker inspect <container_name>
+
+- To check changes made inside container
+	> docker diff <container_name>
+	
+- Copy content from running/stopped container 
+	> docker cp <contentainer_name>:<path> <destination>
+	> docker cp myginx:/usr/src/a.html .   (here . means current location)
+
+- Copy content to running/stopped container 
+	> docker cp a.html mynginx:/usr/src/
 	
 ## Task 1: Download an Image & Play with it
 
@@ -143,7 +153,18 @@ OR
 
 	> Ctr+P & Ctr +Q to get out from container
 
-- Remove & run container again & check if a.html is still there
+- Check differentials (changes) made to container file system 
+	> docker diff mywebserver 
+
+- Copy a.html from container at current location 
+	> docker cp mywebserver:/usr/share/nginx/html/a.thml .
+
+- Make changes in a.html (copied file) and then copy it back inside container 
+	> docker cp a.html mywebserver:/usr/share/nginx/html 
+
+- Check in browser => http://localhost:8081/a.html
+
+- Now Remove & run container again & check if a.html is still there
 	> docker container rm -f mywebserver
 	
 	> docker run --name mywebserver -d -p 8081:80 nginx:latest
